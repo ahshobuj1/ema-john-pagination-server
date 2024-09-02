@@ -34,8 +34,18 @@ async function run() {
             const page = req.query.currentPage;
             const perPage = parseInt(req.query.productPerPage);
 
+            /* const sortOrder =
+                req.query.sortOrder === 'asc' ? 'price' : '-price';
+            console.log(sortOrder); */
+
+            const query = {};
+
+            const options = {
+                sort: {price: req.query.sortOrder === 'asc' ? 1 : -1},
+            };
+
             const products = await productCollection
-                .find()
+                .find(query, options)
                 .skip(page * perPage)
                 .limit(perPage)
                 .toArray();
